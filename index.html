@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0d12" />
+  <title>Mishanya — Baku Survival Tour</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <main class="app">
+    <section class="hero card">
+      <div class="badge">BAKU • 2026</div>
+      <h1>MISHANYA<br><span>SURVIVAL TOUR</span></h1>
+      <p id="countdownLabel">До прилёта Мишани осталось</p>
+      <div class="countdown" id="countdown">
+        <div><strong id="days">00</strong><span>дней</span></div>
+        <div><strong id="hours">00</strong><span>часов</span></div>
+        <div><strong id="minutes">00</strong><span>минут</span></div>
+        <div><strong id="seconds">00</strong><span>секунд</span></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">ОТПУСК В ЦИФРАХ</p>
+          <h2>Счётчики выживания</h2>
+        </div>
+        <button class="ghost" id="resetBtn" type="button">Сбросить</button>
+      </div>
+      <div class="stats" id="stats"></div>
+    </section>
+
+    <section class="card summary-card">
+      <p class="eyebrow">ИТОГОВЫЙ ОТЧЁТ</p>
+      <h2>Насколько мощно идёт отпуск?</h2>
+      <div class="score"><span id="score">0</span><small>очков легендарности</small></div>
+      <button class="primary" id="shareBtn" type="button">Поделиться результатом</button>
+    </section>
+  </main>
+
+  <template id="statTemplate">
+    <article class="stat-item">
+      <div class="stat-icon"></div>
+      <div class="stat-copy">
+        <h3></h3>
+        <p></p>
+      </div>
+      <div class="stat-controls">
+        <button class="minus" type="button">−</button>
+        <strong>0</strong>
+        <button class="plus" type="button">+</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
