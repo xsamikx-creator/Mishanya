@@ -8,8 +8,9 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Выживание Мушвига в Баку</title>
-  <link rel="stylesheet" href="style.css?v=20260729-7" />
-  <link rel="stylesheet" href="gallery.css?v=20260729-7" />
+  <link rel="stylesheet" href="style.css?v=20260729-8" />
+  <link rel="stylesheet" href="gallery.css?v=20260729-8" />
+  <link rel="stylesheet" href="slang.css?v=20260729-8" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -46,6 +47,20 @@
       <blockquote id="mushvigQuote">«Сначала прилетим, потом разберёмся.»</blockquote>
       <button class="quote-button" id="quoteBtn">Следующая мудрость</button>
       <p class="note">Собрано из приколов и формулировок нашей переписки.</p>
+    </section>
+
+    <section class="card slang-card">
+      <p class="eyebrow">СЛОВАРЬ МУШВИГА</p>
+      <h2>Перевод с мушвигского</h2>
+      <div class="slang-grid">
+        <div><b>👑 Олигархия</b><span>Высший уровень жизни и отдыха</span></div>
+        <div><b>👌 Козырно</b><span>Всё сделано грамотно и красиво</span></div>
+        <div><b>🍽️ Дать на кишку</b><span>Нормально поесть</span></div>
+        <div><b>🚽 Пятно давит</b><span>Срочно требуется техническая пауза</span></div>
+        <div><b>🐿️ Ширка-курка — схема-белка</b><span>Всё на мази, план работает</span></div>
+        <div><b>💰 Буржуи</b><span>Зажрались и живут слишком хорошо</span></div>
+      </div>
+      <div class="slang-live" id="slangLive">Ширка-курка — схема-белка. Всё на мази.</div>
     </section>
 
     <section class="card status-card">
@@ -94,7 +109,8 @@
   </div>
 
   <template id="statTemplate"><article class="stat-item"><div class="stat-icon"></div><div class="stat-copy"><h3></h3><p></p></div><div class="stat-controls"><button class="minus">−</button><strong>0</strong><button class="plus">+</button></div></article></template>
-  <script src="app.js?v=20260729-7"></script>
-  <script src="gallery-v2.js?v=20260729-7"></script>
+  <script src="app.js?v=20260729-8"></script>
+  <script src="slang.js?v=20260729-8"></script>
+  <script src="gallery-v2.js?v=20260729-8"></script>
 </body>
 </html>
