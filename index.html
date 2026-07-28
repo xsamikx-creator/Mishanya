@@ -9,7 +9,13 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <div class="loader" id="loader"><div class="plane">✈️</div><strong>Мушвиг летит в Баку</strong><span>Мангал выходит на боевое дежурство…</span></div>
+  <div class="loader" id="loader">
+    <div class="loader-orbit"><div class="plane">✈️</div><div class="city">🏙️</div></div>
+    <strong>Операция «Мушвиг в Баку»</strong>
+    <span id="loaderText">Проверяем запасы холодного пива…</span>
+    <div class="loader-progress"><i id="loaderBar"></i></div>
+    <small id="loaderPercent">0%</small>
+  </div>
   <div class="confetti" id="confetti"></div>
 
   <main class="app" id="app">
@@ -27,6 +33,13 @@
       <div class="fun-line" id="funLine">🍺 Запас пива пополняется…</div>
     </section>
 
+    <section class="card quote-card">
+      <p class="eyebrow">ЦИТАТНИК МУШВИГА</p>
+      <blockquote id="mushvigQuote">«Сначала прилетим, потом разберёмся.»</blockquote>
+      <button class="quote-button" id="quoteBtn">Следующая мудрость</button>
+      <p class="note">Пока это шуточные фразы в стиле проекта. Настоящие цитаты добавим из вашей переписки.</p>
+    </section>
+
     <section class="card status-card">
       <p class="eyebrow">ТЕКУЩАЯ ОБСТАНОВКА</p>
       <div class="status" id="status">🟢 Мушвиг пока держится</div>
@@ -37,6 +50,11 @@
     <section class="card">
       <div class="section-head"><div><p class="eyebrow">ОТПУСК В ЦИФРАХ</p><h2>Счётчики выживания</h2></div><button class="ghost" id="resetBtn">Сбросить</button></div>
       <div class="stats" id="stats"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-head"><div><p class="eyebrow">КОМАНДА ОТПУСКА</p><h2>Рейтинг участников</h2></div><button class="ghost" id="addPlayerBtn">Добавить</button></div>
+      <div class="players" id="players"></div>
     </section>
 
     <section class="card">
