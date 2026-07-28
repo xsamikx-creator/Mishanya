@@ -164,7 +164,6 @@ function runLoader(){
   requestAnimationFrame(frame);
 }
 
-document.querySelector('#resetBtn').onclick=()=>{const reset=()=>{items.forEach(x=>state[x.id]=0);saveState();renderAll();vibrate('heavy');};if(tg?.showConfirm)tg.showConfirm('Точно сбросить всю статистику?',ok=>ok&&reset());else if(confirm('Точно сбросить всю статистику?'))reset();};
 document.querySelector('#shareBtn').onclick=async()=>{const text=buildShareText();const url=`https://t.me/share/url?url=${encodeURIComponent(location.href)}&text=${encodeURIComponent(text)}`;if(tg?.openTelegramLink)tg.openTelegramLink(url);else if(navigator.share)await navigator.share({title:'Выживание Мушвига в Баку',text,url:location.href});else{await navigator.clipboard.writeText(text);showMessage('Итоги скопированы');}};
 document.querySelector('#quoteBtn').onclick=changeQuote;
 document.querySelector('#addPlayerBtn').onclick=addPlayer;
