@@ -7,6 +7,7 @@ const items = [
   { id:'beer',icon:'🍺',title:'Выпито пива',unit:'бутылок',points:2 },
   { id:'hookah',icon:'💨',title:'Выкурено кальянов',unit:'кальянов',points:5 },
   { id:'vodka',icon:'🥃',title:'Выпито водки',unit:'бутылок',points:8 },
+  { id:'damir',icon:'👦',title:'Прогулки с Дамирчиком',unit:'прогулок • восстанавливает состояние',points:5,recovery:true },
   { id:'kebab',icon:'🥩',title:'Съедено шашлыков',unit:'порций',points:4 },
   { id:'sea',icon:'🌊',title:'Поездок на море',unit:'раз',points:10 },
   { id:'taxi',icon:'🚕',title:'Ночных поездок',unit:'поездок',points:6 },
@@ -24,7 +25,8 @@ const phrases = [
   '⚠️ Уровень безумия растёт без разрешения…','🍢 Шашлык просит не забыть про лаваш…',
   '🧊 Лёд заготавливается в промышленных масштабах…','📸 Компромат скоро начнёт накапливаться…',
   '🕶️ План есть. Насколько он хороший — выясним на месте…','🥤 Вода тоже закуплена. Для вида…',
-  '🌙 Ночной Баку уже включил подсветку…','📅 Дни недели временно отменяются…'
+  '🌙 Ночной Баку уже включил подсветку…','📅 Дни недели временно отменяются…',
+  '👦 Прогулка с Дамирчиком восстанавливает систему…','💚 Дамирчик снова вернул Мушвига в зелёную зону…'
 ];
 
 const mushvigQuotes = [
@@ -42,14 +44,16 @@ const mushvigQuotes = [
 const loaderSteps = [
   'Проверяем запасы холодного пива…','Бронируем лучший стол возле мангала…',
   'Предупреждаем Каспий о прибытии…','Настраиваем счётчики приключений…',
-  'Загружаем секретные цитаты Мушвига…','Проверяем готовность печени…',
-  'Запускаем операцию «Выжить в Баку»…'
+  'Загружаем секретные цитаты Мушвига…','Согласовываем прогулки с Дамирчиком…',
+  'Проверяем готовность печени…','Запускаем операцию «Выжить в Баку»…'
 ];
 
 const achievements = [
   {icon:'🍺',title:'Первый пошёл',hint:'Выпить первое пиво',test:s=>s.beer>=1},
   {icon:'💨',title:'Дым над Баку',hint:'Первый кальян',test:s=>s.hookah>=1},
   {icon:'🌊',title:'Каспий увиден',hint:'Съездить на море',test:s=>s.sea>=1},
+  {icon:'👦',title:'Дамирчик спешит на помощь',hint:'Первая прогулка с Дамирчиком',test:s=>s.damir>=1},
+  {icon:'💚',title:'Полное восстановление',hint:'5 прогулок с Дамирчиком',test:s=>s.damir>=5},
   {icon:'🥩',title:'Шашлычный мастер',hint:'5 порций шашлыка',test:s=>s.kebab>=5},
   {icon:'🍻',title:'Десятка',hint:'10 бутылок пива',test:s=>s.beer>=10},
   {icon:'😂',title:'Мемный завод',hint:'20 созданных мемов',test:s=>s.memes>=20},
@@ -80,12 +84,15 @@ function savePhotos(){try{localStorage.setItem(PHOTO_KEY,JSON.stringify(photos))
 function savePlayers(){localStorage.setItem(PLAYER_KEY,JSON.stringify(players));}
 function vibrate(type='light'){tg?.HapticFeedback?.impactOccurred(type);}
 function getScore(){return items.reduce((sum,x)=>sum+state[x.id]*x.points,0);}
+function getDanger(){return Math.max(0,Math.min(100,state.beer*7+state.vodka*18+state.hookah*6+state.sleep*3+state.taxi*2-state.damir*20-state.sea*4));}
 function showMessage(text){if(tg?.showAlert)tg.showAlert(text);else alert(text);}
 
 function renderStats(){
   const box=document.querySelector('#stats'); const template=document.querySelector('#statTemplate'); box.innerHTML='';
   items.forEach(item=>{
     const node=template.content.cloneNode(true);
+    const article=node.querySelector('.stat-item');
+    if(item.recovery) article.classList.add('recovery-item');
     node.querySelector('.stat-icon').textContent=item.icon;
     node.querySelector('h3').textContent=item.title;
     node.querySelector('p').textContent=item.unit;
@@ -95,19 +102,27 @@ function renderStats(){
     box.appendChild(node);
   });
 }
-function changeValue(id,amount){state[id]=Math.max(0,state[id]+amount);saveState();vibrate(amount>0?'medium':'light');renderAll();}
+function changeValue(id,amount){
+  state[id]=Math.max(0,state[id]+amount);saveState();vibrate(amount>0?'medium':'light');renderAll();
+  if(id==='damir'&&amount>0) showMessage('💚 Прогулка с Дамирчиком улучшила состояние Мушвига!');
+}
 
 function renderScore(){
-  const score=getScore(); document.querySelector('#score').textContent=score;
-  let status='🟢 Мушвиг пока держится',hint='Уровень опасности для печени: минимальный',rank='Новичок бакинского выживания';
-  if(score>=50){status='🟡 Начинает путать дни недели';hint='Веселье вышло из тестового режима';rank='Стажёр бакинских приключений';}
-  if(score>=120){status='🟠 Опасный уровень веселья';hint='Требуется вода, еда и контроль взрослых';rank='Опытный отпускник';}
-  if(score>=250){status='🔴 Требуется срочный шашлык';hint='Система работает на пределе возможностей';rank='Командир бакинского загула';}
-  if(score>=500){status='👑 Мушвиг официально стал легендой Баку';hint='Миссия почти невыполнима, но выполнена';rank='Легенда Баку';}
+  const score=getScore(); const danger=getDanger(); document.querySelector('#score').textContent=score;
+  let status='🟢 Мушвиг в отличной форме',hint='Уровень опасности: минимальный',rank='Новичок бакинского выживания';
+  if(danger>=20){status='🟡 Мушвиг пока держится';hint='Небольшая прогулка с Дамирчиком не помешает';}
+  if(danger>=45){status='🟠 Состояние требует внимания';hint='Пора сделать паузу и идти гулять с Дамирчиком';}
+  if(danger>=70){status='🔴 Критический уровень веселья';hint='Срочно: вода, шашлык и прогулка с Дамирчиком';}
+  if(danger>=90){status='🚨 Мушвиг вышел из безопасной зоны';hint='Дамирчик — последняя надежда системы';}
+  if(state.damir>0&&danger===0){status='💚 Дамирчик полностью восстановил Мушвига';hint='Система снова в зелёной зоне';}
+  if(score>=50)rank='Стажёр бакинских приключений';
+  if(score>=120)rank='Опытный отпускник';
+  if(score>=250)rank='Командир бакинского загула';
+  if(score>=500)rank='Легенда Баку';
   document.querySelector('#status').textContent=status;
-  document.querySelector('#statusHint').textContent=hint;
+  document.querySelector('#statusHint').textContent=`${hint} • ${danger}%`;
   document.querySelector('#rank').textContent=rank;
-  document.querySelector('#progressBar').style.width=`${Math.min(100,score/5)}%`;
+  document.querySelector('#progressBar').style.width=`${danger}%`;
 }
 function renderAchievements(){const box=document.querySelector('#achievements');box.innerHTML='';achievements.forEach(a=>{const open=a.test(state);const el=document.createElement('div');el.className=`achievement${open?' unlocked':''}`;el.innerHTML=`<b>${open?'✅':'🔒'} ${a.icon} ${a.title}</b><span>${a.hint}</span>`;box.appendChild(el);});}
 function renderPlayers(){const box=document.querySelector('#players');box.innerHTML='';[...players].sort((a,b)=>b.score-a.score).forEach((player,index)=>{const row=document.createElement('div');row.className='player-row';row.innerHTML=`<div class="place">${index===0?'👑':index+1}</div><div class="player-name"><b>${escapeHtml(player.name)}</b><span>${player.score} очков приключений</span></div><div class="player-actions"><button data-act="minus">−</button><button data-act="plus">+</button></div>`;row.querySelector('[data-act="plus"]').onclick=()=>changePlayer(player.name,1);row.querySelector('[data-act="minus"]').onclick=()=>changePlayer(player.name,-1);row.querySelector('.player-name').onclick=()=>removePlayer(player.name);box.appendChild(row);});}
@@ -118,58 +133,14 @@ function escapeHtml(text){return text.replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'
 
 function renderGallery(){const box=document.querySelector('#gallery');box.innerHTML='';if(!photos.length){box.innerHTML='<div class="empty">📸 Здесь появятся легендарные кадры</div>';return;}photos.forEach((src,index)=>{const img=document.createElement('img');img.src=src;img.alt='Фото отпуска';img.onclick=()=>{const remove=()=>{photos.splice(index,1);savePhotos();renderGallery();};if(tg?.showConfirm)tg.showConfirm('Удалить это фото?',ok=>ok&&remove());else if(confirm('Удалить это фото?'))remove();};box.appendChild(img);});}
 
-function compressPhoto(file){
-  return new Promise((resolve,reject)=>{
-    if(!file.type.startsWith('image/')) return reject(new Error('not-image'));
-    const reader=new FileReader();
-    reader.onerror=()=>reject(new Error('read-error'));
-    reader.onload=()=>{
-      const img=new Image();
-      img.onerror=()=>reject(new Error('decode-error'));
-      img.onload=()=>{
-        const maxSide=1100;
-        const scale=Math.min(1,maxSide/Math.max(img.width,img.height));
-        const canvas=document.createElement('canvas');
-        canvas.width=Math.max(1,Math.round(img.width*scale));
-        canvas.height=Math.max(1,Math.round(img.height*scale));
-        const ctx=canvas.getContext('2d');
-        ctx.drawImage(img,0,0,canvas.width,canvas.height);
-        let quality=.76;
-        let data=canvas.toDataURL('image/jpeg',quality);
-        while(data.length>700000&&quality>.4){quality-=.08;data=canvas.toDataURL('image/jpeg',quality);}
-        resolve(data);
-      };
-      img.src=reader.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-async function addSelectedPhotos(fileList){
-  const slots=Math.max(0,9-photos.length);
-  const selected=[...fileList].slice(0,slots);
-  if(!slots)return showMessage('Можно сохранить максимум 9 фотографий.');
-  let added=0;
-  for(const file of selected){
-    try{
-      const compressed=await compressPhoto(file);
-      photos.unshift(compressed);added++;
-    }catch{showMessage('Не удалось обработать одно из фото. Попробуй выбрать обычный JPG или PNG.');}
-  }
-  photos=photos.slice(0,9);
-  if(added){
-    if(savePhotos()){
-      state.photos+=added;saveState();renderAll();renderGallery();vibrate('medium');
-      showMessage(`Добавлено фото: ${added}`);
-    }
-  }
-}
+function compressPhoto(file){return new Promise((resolve,reject)=>{if(!file.type.startsWith('image/'))return reject(new Error('not-image'));const reader=new FileReader();reader.onerror=()=>reject(new Error('read-error'));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error('decode-error'));img.onload=()=>{const maxSide=1100;const scale=Math.min(1,maxSide/Math.max(img.width,img.height));const canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));const ctx=canvas.getContext('2d');ctx.drawImage(img,0,0,canvas.width,canvas.height);let quality=.76;let data=canvas.toDataURL('image/jpeg',quality);while(data.length>700000&&quality>.4){quality-=.08;data=canvas.toDataURL('image/jpeg',quality);}resolve(data);};img.src=reader.result;};reader.readAsDataURL(file);});}
+async function addSelectedPhotos(fileList){const slots=Math.max(0,9-photos.length);const selected=[...fileList].slice(0,slots);if(!slots)return showMessage('Можно сохранить максимум 9 фотографий.');let added=0;for(const file of selected){try{const compressed=await compressPhoto(file);photos.unshift(compressed);added++;}catch{showMessage('Не удалось обработать одно из фото. Попробуй выбрать обычный JPG или PNG.');}}photos=photos.slice(0,9);if(added&&savePhotos()){state.photos+=added;saveState();renderAll();renderGallery();vibrate('medium');showMessage(`Добавлено фото: ${added}`);}}
 
 function updateCountdown(){let diff=ARRIVAL-new Date();const label=document.querySelector('#countdownLabel');if(diff<=0){diff=0;label.textContent='🎉 Мушвиг прибыл! Операция официально началась!';if(!arrivalCelebrated){arrivalCelebrated=true;sessionStorage.setItem('arrivalCelebrated','1');launchConfetti();}}document.querySelector('#days').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');document.querySelector('#hours').textContent=String(Math.floor(diff/3600000)%24).padStart(2,'0');document.querySelector('#minutes').textContent=String(Math.floor(diff/60000)%60).padStart(2,'0');document.querySelector('#seconds').textContent=String(Math.floor(diff/1000)%60).padStart(2,'0');}
 function launchConfetti(){const box=document.querySelector('#confetti');for(let i=0;i<55;i++){const p=document.createElement('i');p.textContent=['🎉','🍺','✨','🥩','🌊'][i%5];p.style.left=`${Math.random()*100}%`;p.style.animationDelay=`${Math.random()}s`;p.style.fontSize=`${14+Math.random()*16}px`;box.appendChild(p);}setTimeout(()=>box.innerHTML='',4200);vibrate('heavy');}
 function changePhrase(){const line=document.querySelector('#funLine');line.style.opacity='.25';setTimeout(()=>{line.textContent=phrases[Math.floor(Math.random()*phrases.length)];line.style.opacity='1';},180);}
 function changeQuote(){quoteIndex=(quoteIndex+1)%mushvigQuotes.length;const quote=document.querySelector('#mushvigQuote');quote.classList.add('changing');setTimeout(()=>{quote.textContent=mushvigQuotes[quoteIndex];quote.classList.remove('changing');},180);vibrate('light');}
-function buildShareText(){const lines=items.filter(x=>state[x.id]>0).map(x=>`${x.icon} ${x.title}: ${state[x.id]}`);const leaders=[...players].sort((a,b)=>b.score-a.score).slice(0,3).map((x,i)=>`${i+1}. ${x.name} — ${x.score}`);return `🍻 ОПЕРАЦИЯ «ВЫЖИТЬ В БАКУ»\n\n${lines.length?lines.join('\n'):'Статистика пока по нулям 😴'}\n\n🏆 Уровень легендарности: ${getScore()} очков\n\n👥 Рейтинг:\n${leaders.join('\n')}`;}
+function buildShareText(){const lines=items.filter(x=>state[x.id]>0).map(x=>`${x.icon} ${x.title}: ${state[x.id]}`);const leaders=[...players].sort((a,b)=>b.score-a.score).slice(0,3).map((x,i)=>`${i+1}. ${x.name} — ${x.score}`);return `🍻 ОПЕРАЦИЯ «ВЫЖИТЬ В БАКУ»\n\n${lines.length?lines.join('\n'):'Статистика пока по нулям 😴'}\n\n❤️ Состояние: ${getDanger()}% опасности\n🏆 Уровень легендарности: ${getScore()} очков\n\n👥 Рейтинг:\n${leaders.join('\n')}`;}
 function renderAll(){renderStats();renderScore();renderAchievements();renderPlayers();}
 function runLoader(){const bar=document.querySelector('#loaderBar');const percent=document.querySelector('#loaderPercent');const text=document.querySelector('#loaderText');const duration=4200;const started=performance.now();let lastStep=-1;function frame(now){const progress=Math.min(1,(now-started)/duration);const value=Math.floor(progress*100);bar.style.width=`${value}%`;percent.textContent=`${value}%`;const step=Math.min(loaderSteps.length-1,Math.floor(progress*loaderSteps.length));if(step!==lastStep){lastStep=step;text.textContent=loaderSteps[step];}if(progress<1){requestAnimationFrame(frame);}else{setTimeout(()=>{document.querySelector('#loader').classList.add('hide');document.querySelector('#app').classList.add('ready');vibrate('medium');},350);}}requestAnimationFrame(frame);}
 
