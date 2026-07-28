@@ -8,7 +8,7 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Выживание Мушвига в Баку</title>
-  <link rel="stylesheet" href="style.css?v=20260729-6" />
+  <link rel="stylesheet" href="style.css?v=20260729-7" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
@@ -71,7 +71,7 @@
 
     <section class="card">
       <div class="section-head"><div><p class="eyebrow">ФОТОХРОНИКА</p><h2>Компромат отпуска</h2></div><label class="upload">Добавить фото<input id="photoInput" type="file" accept="image/*" multiple /></label></div>
-      <p class="note">Фото уменьшаются автоматически. На этом телефоне хранится до 6 кадров.</p>
+      <p class="note">Одно большое фото меняется автоматически. Нажми на превью или на большое фото для просмотра.</p>
       <div class="gallery" id="gallery"><div class="empty">📸 Здесь появятся легендарные кадры</div></div>
     </section>
 
@@ -84,7 +84,15 @@
     </section>
   </main>
 
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Закрыть">×</button>
+    <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Предыдущее фото">‹</button>
+    <img id="lightboxImage" alt="Фото отпуска крупным планом" />
+    <button class="lightbox-nav next" id="lightboxNext" aria-label="Следующее фото">›</button>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+  </div>
+
   <template id="statTemplate"><article class="stat-item"><div class="stat-icon"></div><div class="stat-copy"><h3></h3><p></p></div><div class="stat-controls"><button class="minus">−</button><strong>0</strong><button class="plus">+</button></div></article></template>
-  <script src="app.js?v=20260729-6"></script>
+  <script src="app.js?v=20260729-7"></script>
 </body>
 </html>
