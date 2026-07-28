@@ -28,8 +28,7 @@ const phrases = [
 ];
 
 const mushvigQuotes = [
-  '«Сначала прилетим, потом разберёмся.»',
-  '«Один кальян — это не статистика.»',
+  '«Сначала прилетим, потом разберёмся.»','«Один кальян — это не статистика.»',
   '«На море поедем. Вопрос только — в какой день проснёмся.»',
   '«Шашлык без лаваша — это просто мясо с проблемами.»',
   '«Я не опоздал. Я появился в нужный момент.»',
@@ -41,12 +40,9 @@ const mushvigQuotes = [
 ];
 
 const loaderSteps = [
-  'Проверяем запасы холодного пива…',
-  'Бронируем лучший стол возле мангала…',
-  'Предупреждаем Каспий о прибытии…',
-  'Настраиваем счётчики приключений…',
-  'Загружаем секретные цитаты Мушвига…',
-  'Проверяем готовность печени…',
+  'Проверяем запасы холодного пива…','Бронируем лучший стол возле мангала…',
+  'Предупреждаем Каспий о прибытии…','Настраиваем счётчики приключений…',
+  'Загружаем секретные цитаты Мушвига…','Проверяем готовность печени…',
   'Запускаем операцию «Выжить в Баку»…'
 ];
 
@@ -80,7 +76,7 @@ function loadState(){try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY
 function loadPhotos(){try{return JSON.parse(localStorage.getItem(PHOTO_KEY))||[];}catch{return[];}}
 function loadPlayers(){try{return JSON.parse(localStorage.getItem(PLAYER_KEY))||[{name:'Мушвиг',score:0},{name:'Самир',score:0}];}catch{return[{name:'Мушвиг',score:0},{name:'Самир',score:0}];}}
 function saveState(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
-function savePhotos(){try{localStorage.setItem(PHOTO_KEY,JSON.stringify(photos));}catch{showMessage('Память телефона заполнена. Удали часть фотографий.');}}
+function savePhotos(){try{localStorage.setItem(PHOTO_KEY,JSON.stringify(photos));return true;}catch{showMessage('Память телефона заполнена. Удали часть фотографий.');return false;}}
 function savePlayers(){localStorage.setItem(PLAYER_KEY,JSON.stringify(players));}
 function vibrate(type='light'){tg?.HapticFeedback?.impactOccurred(type);}
 function getScore(){return items.reduce((sum,x)=>sum+state[x.id]*x.points,0);}
@@ -99,7 +95,6 @@ function renderStats(){
     box.appendChild(node);
   });
 }
-
 function changeValue(id,amount){state[id]=Math.max(0,state[id]+amount);saveState();vibrate(amount>0?'medium':'light');renderAll();}
 
 function renderScore(){
@@ -114,60 +109,74 @@ function renderScore(){
   document.querySelector('#rank').textContent=rank;
   document.querySelector('#progressBar').style.width=`${Math.min(100,score/5)}%`;
 }
-
-function renderAchievements(){
-  const box=document.querySelector('#achievements'); box.innerHTML='';
-  achievements.forEach(a=>{const open=a.test(state);const el=document.createElement('div');el.className=`achievement${open?' unlocked':''}`;el.innerHTML=`<b>${open?'✅':'🔒'} ${a.icon} ${a.title}</b><span>${a.hint}</span>`;box.appendChild(el);});
-}
-
-function renderPlayers(){
-  const box=document.querySelector('#players'); box.innerHTML='';
-  [...players].sort((a,b)=>b.score-a.score).forEach((player,index)=>{
-    const row=document.createElement('div'); row.className='player-row';
-    row.innerHTML=`<div class="place">${index===0?'👑':index+1}</div><div class="player-name"><b>${escapeHtml(player.name)}</b><span>${player.score} очков приключений</span></div><div class="player-actions"><button data-act="minus">−</button><button data-act="plus">+</button></div>`;
-    row.querySelector('[data-act="plus"]').onclick=()=>changePlayer(player.name,1);
-    row.querySelector('[data-act="minus"]').onclick=()=>changePlayer(player.name,-1);
-    row.querySelector('.player-name').onclick=()=>removePlayer(player.name);
-    box.appendChild(row);
-  });
-}
+function renderAchievements(){const box=document.querySelector('#achievements');box.innerHTML='';achievements.forEach(a=>{const open=a.test(state);const el=document.createElement('div');el.className=`achievement${open?' unlocked':''}`;el.innerHTML=`<b>${open?'✅':'🔒'} ${a.icon} ${a.title}</b><span>${a.hint}</span>`;box.appendChild(el);});}
+function renderPlayers(){const box=document.querySelector('#players');box.innerHTML='';[...players].sort((a,b)=>b.score-a.score).forEach((player,index)=>{const row=document.createElement('div');row.className='player-row';row.innerHTML=`<div class="place">${index===0?'👑':index+1}</div><div class="player-name"><b>${escapeHtml(player.name)}</b><span>${player.score} очков приключений</span></div><div class="player-actions"><button data-act="minus">−</button><button data-act="plus">+</button></div>`;row.querySelector('[data-act="plus"]').onclick=()=>changePlayer(player.name,1);row.querySelector('[data-act="minus"]').onclick=()=>changePlayer(player.name,-1);row.querySelector('.player-name').onclick=()=>removePlayer(player.name);box.appendChild(row);});}
 function changePlayer(name,amount){const player=players.find(x=>x.name===name);if(!player)return;player.score=Math.max(0,player.score+amount);savePlayers();renderPlayers();vibrate(amount>0?'medium':'light');}
 function removePlayer(name){const remove=()=>{players=players.filter(x=>x.name!==name);savePlayers();renderPlayers();};if(tg?.showConfirm)tg.showConfirm(`Удалить участника «${name}»?`,ok=>ok&&remove());else if(confirm(`Удалить участника «${name}»?`))remove();}
 function addPlayer(){const name=prompt('Имя нового участника:')?.trim();if(!name)return;if(players.some(x=>x.name.toLowerCase()===name.toLowerCase()))return showMessage('Такой участник уже есть.');players.push({name,score:0});savePlayers();renderPlayers();vibrate('medium');}
 function escapeHtml(text){return text.replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));}
 
-function renderGallery(){
-  const box=document.querySelector('#gallery'); box.innerHTML='';
-  if(!photos.length){box.innerHTML='<div class="empty">📸 Здесь появятся легендарные кадры</div>';return;}
-  photos.forEach((src,index)=>{const img=document.createElement('img');img.src=src;img.alt='Фото отпуска';img.onclick=()=>{const remove=()=>{photos.splice(index,1);savePhotos();renderGallery();};if(tg?.showConfirm)tg.showConfirm('Удалить это фото?',ok=>ok&&remove());else if(confirm('Удалить это фото?'))remove();};box.appendChild(img);});
+function renderGallery(){const box=document.querySelector('#gallery');box.innerHTML='';if(!photos.length){box.innerHTML='<div class="empty">📸 Здесь появятся легендарные кадры</div>';return;}photos.forEach((src,index)=>{const img=document.createElement('img');img.src=src;img.alt='Фото отпуска';img.onclick=()=>{const remove=()=>{photos.splice(index,1);savePhotos();renderGallery();};if(tg?.showConfirm)tg.showConfirm('Удалить это фото?',ok=>ok&&remove());else if(confirm('Удалить это фото?'))remove();};box.appendChild(img);});}
+
+function compressPhoto(file){
+  return new Promise((resolve,reject)=>{
+    if(!file.type.startsWith('image/')) return reject(new Error('not-image'));
+    const reader=new FileReader();
+    reader.onerror=()=>reject(new Error('read-error'));
+    reader.onload=()=>{
+      const img=new Image();
+      img.onerror=()=>reject(new Error('decode-error'));
+      img.onload=()=>{
+        const maxSide=1100;
+        const scale=Math.min(1,maxSide/Math.max(img.width,img.height));
+        const canvas=document.createElement('canvas');
+        canvas.width=Math.max(1,Math.round(img.width*scale));
+        canvas.height=Math.max(1,Math.round(img.height*scale));
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+        let quality=.76;
+        let data=canvas.toDataURL('image/jpeg',quality);
+        while(data.length>700000&&quality>.4){quality-=.08;data=canvas.toDataURL('image/jpeg',quality);}
+        resolve(data);
+      };
+      img.src=reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
 }
 
-function updateCountdown(){
-  let diff=ARRIVAL-new Date(); const label=document.querySelector('#countdownLabel');
-  if(diff<=0){diff=0;label.textContent='🎉 Мушвиг прибыл! Операция официально началась!';if(!arrivalCelebrated){arrivalCelebrated=true;sessionStorage.setItem('arrivalCelebrated','1');launchConfetti();}}
-  document.querySelector('#days').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
-  document.querySelector('#hours').textContent=String(Math.floor(diff/3600000)%24).padStart(2,'0');
-  document.querySelector('#minutes').textContent=String(Math.floor(diff/60000)%60).padStart(2,'0');
-  document.querySelector('#seconds').textContent=String(Math.floor(diff/1000)%60).padStart(2,'0');
+async function addSelectedPhotos(fileList){
+  const slots=Math.max(0,9-photos.length);
+  const selected=[...fileList].slice(0,slots);
+  if(!slots)return showMessage('Можно сохранить максимум 9 фотографий.');
+  let added=0;
+  for(const file of selected){
+    try{
+      const compressed=await compressPhoto(file);
+      photos.unshift(compressed);added++;
+    }catch{showMessage('Не удалось обработать одно из фото. Попробуй выбрать обычный JPG или PNG.');}
+  }
+  photos=photos.slice(0,9);
+  if(added){
+    if(savePhotos()){
+      state.photos+=added;saveState();renderAll();renderGallery();vibrate('medium');
+      showMessage(`Добавлено фото: ${added}`);
+    }
+  }
 }
 
+function updateCountdown(){let diff=ARRIVAL-new Date();const label=document.querySelector('#countdownLabel');if(diff<=0){diff=0;label.textContent='🎉 Мушвиг прибыл! Операция официально началась!';if(!arrivalCelebrated){arrivalCelebrated=true;sessionStorage.setItem('arrivalCelebrated','1');launchConfetti();}}document.querySelector('#days').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');document.querySelector('#hours').textContent=String(Math.floor(diff/3600000)%24).padStart(2,'0');document.querySelector('#minutes').textContent=String(Math.floor(diff/60000)%60).padStart(2,'0');document.querySelector('#seconds').textContent=String(Math.floor(diff/1000)%60).padStart(2,'0');}
 function launchConfetti(){const box=document.querySelector('#confetti');for(let i=0;i<55;i++){const p=document.createElement('i');p.textContent=['🎉','🍺','✨','🥩','🌊'][i%5];p.style.left=`${Math.random()*100}%`;p.style.animationDelay=`${Math.random()}s`;p.style.fontSize=`${14+Math.random()*16}px`;box.appendChild(p);}setTimeout(()=>box.innerHTML='',4200);vibrate('heavy');}
 function changePhrase(){const line=document.querySelector('#funLine');line.style.opacity='.25';setTimeout(()=>{line.textContent=phrases[Math.floor(Math.random()*phrases.length)];line.style.opacity='1';},180);}
 function changeQuote(){quoteIndex=(quoteIndex+1)%mushvigQuotes.length;const quote=document.querySelector('#mushvigQuote');quote.classList.add('changing');setTimeout(()=>{quote.textContent=mushvigQuotes[quoteIndex];quote.classList.remove('changing');},180);vibrate('light');}
 function buildShareText(){const lines=items.filter(x=>state[x.id]>0).map(x=>`${x.icon} ${x.title}: ${state[x.id]}`);const leaders=[...players].sort((a,b)=>b.score-a.score).slice(0,3).map((x,i)=>`${i+1}. ${x.name} — ${x.score}`);return `🍻 ОПЕРАЦИЯ «ВЫЖИТЬ В БАКУ»\n\n${lines.length?lines.join('\n'):'Статистика пока по нулям 😴'}\n\n🏆 Уровень легендарности: ${getScore()} очков\n\n👥 Рейтинг:\n${leaders.join('\n')}`;}
 function renderAll(){renderStats();renderScore();renderAchievements();renderPlayers();}
-
-function runLoader(){
-  const bar=document.querySelector('#loaderBar');const percent=document.querySelector('#loaderPercent');const text=document.querySelector('#loaderText');
-  const duration=4200;const started=performance.now();let lastStep=-1;
-  function frame(now){const progress=Math.min(1,(now-started)/duration);const value=Math.floor(progress*100);bar.style.width=`${value}%`;percent.textContent=`${value}%`;const step=Math.min(loaderSteps.length-1,Math.floor(progress*loaderSteps.length));if(step!==lastStep){lastStep=step;text.textContent=loaderSteps[step];}if(progress<1){requestAnimationFrame(frame);}else{setTimeout(()=>{document.querySelector('#loader').classList.add('hide');document.querySelector('#app').classList.add('ready');vibrate('medium');},350);}}
-  requestAnimationFrame(frame);
-}
+function runLoader(){const bar=document.querySelector('#loaderBar');const percent=document.querySelector('#loaderPercent');const text=document.querySelector('#loaderText');const duration=4200;const started=performance.now();let lastStep=-1;function frame(now){const progress=Math.min(1,(now-started)/duration);const value=Math.floor(progress*100);bar.style.width=`${value}%`;percent.textContent=`${value}%`;const step=Math.min(loaderSteps.length-1,Math.floor(progress*loaderSteps.length));if(step!==lastStep){lastStep=step;text.textContent=loaderSteps[step];}if(progress<1){requestAnimationFrame(frame);}else{setTimeout(()=>{document.querySelector('#loader').classList.add('hide');document.querySelector('#app').classList.add('ready');vibrate('medium');},350);}}requestAnimationFrame(frame);}
 
 document.querySelector('#shareBtn').onclick=async()=>{const text=buildShareText();const url=`https://t.me/share/url?url=${encodeURIComponent(location.href)}&text=${encodeURIComponent(text)}`;if(tg?.openTelegramLink)tg.openTelegramLink(url);else if(navigator.share)await navigator.share({title:'Выживание Мушвига в Баку',text,url:location.href});else{await navigator.clipboard.writeText(text);showMessage('Итоги скопированы');}};
 document.querySelector('#quoteBtn').onclick=changeQuote;
 document.querySelector('#addPlayerBtn').onclick=addPlayer;
-document.querySelector('#photoInput').onchange=event=>{[...event.target.files].slice(0,9-photos.length).forEach(file=>{if(file.size>1200000){showMessage('Фото слишком большое. Выбери файл меньше 1,2 МБ.');return;}const reader=new FileReader();reader.onload=()=>{photos.unshift(reader.result);photos=photos.slice(0,9);state.photos+=1;saveState();savePhotos();renderAll();renderGallery();};reader.readAsDataURL(file);});event.target.value='';};
+document.querySelector('#photoInput').onchange=async event=>{const files=event.target.files;event.target.value='';await addSelectedPhotos(files);};
 
 renderAll();renderGallery();updateCountdown();changePhrase();document.querySelector('#mushvigQuote').textContent=mushvigQuotes[quoteIndex];runLoader();
 setInterval(updateCountdown,1000);setInterval(changePhrase,4300);setInterval(changeQuote,12000);
