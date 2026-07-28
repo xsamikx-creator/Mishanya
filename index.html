@@ -2,59 +2,64 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b0d12" />
-  <title>Выживание Мишани в Баку</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#080a0f" />
+  <title>Выживание Мушвига в Баку</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-  <main class="app">
+  <div class="loader" id="loader"><div class="plane">✈️</div><strong>Мушвиг летит в Баку</strong><span>Мангал выходит на боевое дежурство…</span></div>
+  <div class="confetti" id="confetti"></div>
+
+  <main class="app" id="app">
     <section class="hero card">
-      <div class="badge">БАКУ • 2026</div>
-      <h1>ВЫЖИВАНИЕ<br><span>МИШАНИ В БАКУ</span></h1>
-      <p id="countdownLabel">До прилёта Мишани осталось</p>
+      <div class="topline"><div class="badge">БАКУ • 2026</div><div class="live-dot">● В ЭФИРЕ</div></div>
+      <div class="route"><span>МУШВИГ</span><i></i><b>✈️</b><i></i><span>БАКУ</span></div>
+      <h1>ОПЕРАЦИЯ<br><span>«ВЫЖИТЬ В БАКУ»</span></h1>
+      <p id="countdownLabel">До прилёта Мушвига осталось</p>
       <div class="countdown">
         <div><strong id="days">00</strong><span>дней</span></div>
         <div><strong id="hours">00</strong><span>часов</span></div>
         <div><strong id="minutes">00</strong><span>минут</span></div>
         <div><strong id="seconds">00</strong><span>секунд</span></div>
       </div>
-      <div class="fun-line" id="funLine">🍺 Запас пива пополняется...</div>
+      <div class="fun-line" id="funLine">🍺 Запас пива пополняется…</div>
+    </section>
+
+    <section class="card status-card">
+      <p class="eyebrow">ТЕКУЩАЯ ОБСТАНОВКА</p>
+      <div class="status" id="status">🟢 Мушвиг пока держится</div>
+      <div class="progress"><span id="progressBar"></span></div>
+      <small id="statusHint">Уровень опасности для печени: минимальный</small>
     </section>
 
     <section class="card">
-      <div class="section-head">
-        <div>
-          <p class="eyebrow">ОТПУСК В ЦИФРАХ</p>
-          <h2>Счётчики выживания</h2>
-        </div>
-        <button class="ghost" id="resetBtn" type="button">Сбросить всё</button>
-      </div>
-      <div class="status" id="status">🟢 Мишаня пока держится</div>
+      <div class="section-head"><div><p class="eyebrow">ОТПУСК В ЦИФРАХ</p><h2>Счётчики выживания</h2></div><button class="ghost" id="resetBtn">Сбросить</button></div>
       <div class="stats" id="stats"></div>
     </section>
 
+    <section class="card">
+      <p class="eyebrow">ДОСТИЖЕНИЯ</p><h2>Зал славы</h2>
+      <div class="achievements" id="achievements"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-head"><div><p class="eyebrow">ФОТОХРОНИКА</p><h2>Компромат отпуска</h2></div><label class="upload">Добавить фото<input id="photoInput" type="file" accept="image/*" multiple /></label></div>
+      <p class="note">Фото сохраняются только на этом телефоне.</p>
+      <div class="gallery" id="gallery"><div class="empty">📸 Здесь появятся легендарные кадры</div></div>
+    </section>
+
     <section class="card summary-card">
-      <p class="eyebrow">УРОВЕНЬ ЛЕГЕНДАРНОСТИ</p>
+      <p class="eyebrow">ИТОГОВЫЙ ПРОТОКОЛ</p>
+      <h2>Уровень легендарности</h2>
       <div class="score"><span id="score">0</span><small>очков</small></div>
-      <div class="achievement" id="achievement">🏆 Первое достижение ещё впереди</div>
-      <button class="primary" id="shareBtn" type="button">Поделиться итогами</button>
+      <div class="rank" id="rank">Новичок бакинского выживания</div>
+      <button class="primary" id="shareBtn">Отправить итоги друзьям</button>
     </section>
   </main>
 
-  <template id="statTemplate">
-    <article class="stat-item">
-      <div class="stat-icon"></div>
-      <div class="stat-copy"><h3></h3><p></p></div>
-      <div class="stat-controls">
-        <button class="minus" type="button">−</button>
-        <strong>0</strong>
-        <button class="plus" type="button">+</button>
-      </div>
-    </article>
-  </template>
-
+  <template id="statTemplate"><article class="stat-item"><div class="stat-icon"></div><div class="stat-copy"><h3></h3><p></p></div><div class="stat-controls"><button class="minus">−</button><strong>0</strong><button class="plus">+</button></div></article></template>
   <script src="app.js"></script>
 </body>
 </html>
