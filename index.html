@@ -8,22 +8,38 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Выживание Мушвига в Баку</title>
-  <link rel="stylesheet" href="style.css?v=20260729-10" />
-  <link rel="stylesheet" href="gallery.css?v=20260729-10" />
-  <link rel="stylesheet" href="slang.css?v=20260729-10" />
+  <link rel="stylesheet" href="style.css?v=20260729-11" />
+  <link rel="stylesheet" href="gallery.css?v=20260729-11" />
+  <link rel="stylesheet" href="slang.css?v=20260729-11" />
+  <link rel="stylesheet" href="birthday.css?v=20260729-11" />
+  <link rel="stylesheet" href="loader-run.css?v=20260729-11" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js?v=20260729-10"></script>
+  <script src="supabase-config.js?v=20260729-11"></script>
 </head>
 <body>
   <div class="loader" id="loader">
-    <div class="flight-map">
-      <div class="flight-city city-moscow"><b>МОСКВА</b><span>🏙️</span></div>
-      <div class="flight-path"><i></i><div class="loader-plane">✈️</div></div>
-      <div class="flight-city city-baku"><b>БАКУ</b><span>🏛️</span></div>
+    <div class="travel-loader">
+      <div class="travel-scene">
+        <div class="travel-city moscow"><span>🏙️</span><b>МОСКВА</b></div>
+        <div class="travel-city baku"><span>🏛️</span><b>БАКУ</b></div>
+        <div class="travel-road"></div>
+        <div class="travel-dust">💨</div>
+        <div class="mushvig-runner">
+          <div class="runner-head"></div>
+          <div class="runner-body"></div>
+          <div class="runner-arm one"></div>
+          <div class="runner-arm two"></div>
+          <div class="runner-leg one"></div>
+          <div class="runner-leg two"></div>
+          <div class="runner-suitcase"></div>
+        </div>
+        <div class="runner-plane">✈️</div>
+      </div>
+      <div class="travel-caption">Мушвиг с чемоданом прорывается из Москвы в Баку</div>
     </div>
-    <strong>Мушвиг вылетел в Баку</strong>
-    <span id="loaderText">Поднимаемся над Москвой…</span>
+    <strong>Операция «Олигархия» запущена</strong>
+    <span id="loaderText">Мушвиг схватил чемодан…</span>
     <div class="loader-progress"><i id="loaderBar"></i></div>
     <small id="loaderPercent">0%</small>
   </div>
@@ -42,6 +58,20 @@
         <div><strong id="seconds">00</strong><span>секунд</span></div>
       </div>
       <div class="fun-line" id="funLine">🍺 Запас пива пополняется…</div>
+    </section>
+
+    <section class="card birthday-card" id="birthdayCard">
+      <p class="eyebrow">ОСОБАЯ ДАТА</p>
+      <div class="birthday-date">👑 20 АВГУСТА 2026</div>
+      <h2 id="birthdayTitle">ДЕНЬ ВЕЛИКОЙ ОЛИГАРХИИ МУШВИГА</h2>
+      <p class="birthday-subtitle" id="birthdaySubtitle">День, когда обычный отдых официально переходит в высшую лигу.</p>
+      <div class="birthday-countdown">
+        <div><strong id="birthdayDays">00</strong><span>дней</span></div>
+        <div><strong id="birthdayHours">00</strong><span>часов</span></div>
+        <div><strong id="birthdayMinutes">00</strong><span>минут</span></div>
+        <div><strong id="birthdaySeconds">00</strong><span>секунд</span></div>
+      </div>
+      <div class="birthday-phrase" id="birthdayPhrase">🥂 Козырно родился — олигархично отмечаем!</div>
     </section>
 
     <section class="card quote-card">
@@ -112,8 +142,9 @@
   </div>
 
   <template id="statTemplate"><article class="stat-item"><div class="stat-icon"></div><div class="stat-copy"><h3></h3><p></p></div><div class="stat-controls"><button class="minus">−</button><strong>0</strong><button class="plus">+</button></div></article></template>
-  <script src="app.js?v=20260729-10"></script>
-  <script src="slang.js?v=20260729-10"></script>
-  <script src="gallery-v2.js?v=20260729-10"></script>
+  <script src="app.js?v=20260729-11"></script>
+  <script src="slang.js?v=20260729-11"></script>
+  <script src="birthday.js?v=20260729-11"></script>
+  <script src="gallery-v2.js?v=20260729-11"></script>
 </body>
 </html>
