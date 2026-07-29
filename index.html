@@ -8,10 +8,12 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Выживание Мушвига в Баку</title>
-  <link rel="stylesheet" href="style.css?v=20260729-9" />
-  <link rel="stylesheet" href="gallery.css?v=20260729-9" />
-  <link rel="stylesheet" href="slang.css?v=20260729-9" />
+  <link rel="stylesheet" href="style.css?v=20260729-10" />
+  <link rel="stylesheet" href="gallery.css?v=20260729-10" />
+  <link rel="stylesheet" href="slang.css?v=20260729-10" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js?v=20260729-10"></script>
 </head>
 <body>
   <div class="loader" id="loader">
@@ -86,9 +88,9 @@
     </section>
 
     <section class="card">
-      <div class="section-head"><div><p class="eyebrow">ФОТОХРОНИКА</p><h2>Компромат отпуска</h2></div><label class="upload">Добавить фото<input id="photoInput" type="file" accept="image/*" multiple /></label></div>
-      <p class="note">Фото хранятся в расширенной памяти телефона. Большое фото показывается целиком, без обрезки.</p>
-      <div class="gallery" id="gallery"><div class="empty">📸 Здесь появятся легендарные кадры</div></div>
+      <div class="section-head"><div><p class="eyebrow">ФОТОХРОНИКА</p><h2>Общая галерея</h2></div><label class="upload">Добавить фото<input id="photoInput" type="file" accept="image/*" multiple /></label></div>
+      <p class="note" id="galleryModeNote">Подключение к общей галерее…</p>
+      <div class="gallery" id="gallery"><div class="empty">📸 Загружаем легендарные кадры…</div></div>
     </section>
 
     <section class="card summary-card">
@@ -110,8 +112,8 @@
   </div>
 
   <template id="statTemplate"><article class="stat-item"><div class="stat-icon"></div><div class="stat-copy"><h3></h3><p></p></div><div class="stat-controls"><button class="minus">−</button><strong>0</strong><button class="plus">+</button></div></article></template>
-  <script src="app.js?v=20260729-9"></script>
-  <script src="slang.js?v=20260729-9"></script>
-  <script src="gallery-v2.js?v=20260729-9"></script>
+  <script src="app.js?v=20260729-10"></script>
+  <script src="slang.js?v=20260729-10"></script>
+  <script src="gallery-v2.js?v=20260729-10"></script>
 </body>
 </html>
