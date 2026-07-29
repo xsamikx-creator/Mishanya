@@ -12,7 +12,7 @@ function updateBirthdayCountdown(){
     card.classList.add('today');
     title.textContent='👑 ДЕНЬ ВЕЛИКОЙ ОЛИГАРХИИ МУШВИГА';
     subtitle.textContent='Сегодня правила отменены. Мушвиг официально повышен до пожизненного олигарха бакинского отдыха.';
-    phrase.textContent='🥂 Козырно родился — олигархично отмечаем!';
+    phrase.textContent='🥂 Козырно родился — культурно отмечаем!';
     if(!birthdayCelebrated){birthdayCelebrated=true;sessionStorage.setItem('mushvigBirthdayCelebrated','1');launchConfetti?.();}
     return;
   }
