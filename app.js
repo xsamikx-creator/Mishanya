@@ -1,4 +1,4 @@
-const ARRIVAL = new Date('2026-08-08T12:00:00+04:00');
+const ARRIVAL = new Date('2026-08-08T14:05:00+04:00');
 const STORAGE_KEY = 'mushvig-baku-stats-v4';
 const PHOTO_KEY = 'mushvig-baku-photos-v2';
 const PLAYER_KEY = 'mushvig-baku-players-v1';
