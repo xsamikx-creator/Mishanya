@@ -11,8 +11,8 @@
     localStorage.setItem(ADMIN_DEVICE_KEY, '1');
   }
 
-  const isAdmin = localStorage.getItem(ADMIN_DEVICE_KEY) === '1';
-  let adminPreview = false; // только на текущую сессию
+  let isAdmin = localStorage.getItem(ADMIN_DEVICE_KEY) === '1';
+  let adminPreview = false;
   let stage = localStorage.getItem(STAGE_KEY) || 'waiting';
 
   const main = document.querySelector('#app');
@@ -40,6 +40,14 @@
     render(); notify();
   }
 
+  function activateAdmin() {
+    localStorage.setItem(ADMIN_DEVICE_KEY, '1');
+    isAdmin = true;
+    adminPreview = false;
+    render();
+    notify();
+  }
+
   function getState() {
     return { isAdmin, adminPreview, stage, approved: stage === 'approved', startParam };
   }
@@ -65,7 +73,6 @@
     access.innerHTML=`<div class="access-icon">${content.icon}</div><div class="access-status">${content.badge}</div><h2>${content.title}</h2><p>${content.text}</p><div class="access-actions">${content.buttons}</div>`;
     access.querySelectorAll('[data-action]').forEach(button=>{button.onclick=()=>{const a=button.dataset.action;if(a==='arrived')setStage('pending');else if(a==='approve')setStage('approved');else setStage(a);};});
 
-    // Админ видит всё всегда, кроме добровольного предпросмотра.
     const shouldLock = isAdmin ? adminPreview : stage !== 'approved';
     protectedCards.forEach(card=>card.classList.toggle('locked-preview',shouldLock));
     renderAdminBar();
@@ -79,6 +86,6 @@
     Object.entries(values).forEach(([id,value])=>{const el=document.querySelector('#'+id);if(el)el.textContent=String(value).padStart(2,'0');});
   }
 
-  window.MushvigAccess={getState,setStage,setPreview,render,isAdmin,canUseEsim:()=>isAdmin||stage==='approved'};
+  window.MushvigAccess={getState,setStage,setPreview,activateAdmin,render,get isAdmin(){return isAdmin;},canUseEsim:()=>isAdmin||stage==='approved'};
   render(); updateExactCountdown(); setInterval(updateExactCountdown,1000); notify();
 })();
