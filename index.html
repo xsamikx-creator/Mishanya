@@ -8,147 +8,36 @@
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
   <title>Выживание Мушвига в Баку</title>
-  <link rel="stylesheet" href="style.css?v=20260729-14" />
-  <link rel="stylesheet" href="gallery.css?v=20260729-14" />
-  <link rel="stylesheet" href="slang.css?v=20260729-14" />
-  <link rel="stylesheet" href="birthday.css?v=20260729-14" />
-  <link rel="stylesheet" href="loader-run.css?v=20260729-14" />
-  <link rel="stylesheet" href="access-mode.css?v=20260729-14" />
+  <link rel="stylesheet" href="style.css?v=20260807-1" />
+  <link rel="stylesheet" href="gallery.css?v=20260807-1" />
+  <link rel="stylesheet" href="slang.css?v=20260807-1" />
+  <link rel="stylesheet" href="birthday.css?v=20260807-1" />
+  <link rel="stylesheet" href="loader-run.css?v=20260807-1" />
+  <link rel="stylesheet" href="access-mode.css?v=20260807-1" />
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js?v=20260729-14"></script>
+  <script src="supabase-config.js?v=20260807-1"></script>
 </head>
 <body>
   <div class="loader" id="loader">
-    <div class="travel-loader">
-      <div class="travel-scene">
-        <div class="travel-city moscow"><span>🏙️</span><b>МОСКВА</b></div>
-        <div class="travel-city baku"><span>🏛️</span><b>БАКУ</b></div>
-        <div class="travel-road"></div>
-        <div class="travel-dust">💨</div>
-        <div class="mushvig-runner">
-          <div class="runner-head"></div>
-          <div class="runner-body"></div>
-          <div class="runner-arm one"></div>
-          <div class="runner-arm two"></div>
-          <div class="runner-leg one"></div>
-          <div class="runner-leg two"></div>
-          <div class="runner-suitcase"></div>
-        </div>
-        <div class="runner-plane">✈️</div>
-      </div>
-      <div class="travel-caption">Мушвиг с чемоданом прорывается из Москвы в Баку</div>
-    </div>
-    <strong>Операция «Олигархия» запущена</strong>
-    <span id="loaderText">Мушвиг схватил чемодан…</span>
-    <div class="loader-progress"><i id="loaderBar"></i></div>
-    <small id="loaderPercent">0%</small>
+    <div class="travel-loader"><div class="travel-scene"><div class="travel-city moscow"><span>🏙️</span><b>МОСКВА</b></div><div class="travel-city baku"><span>🏛️</span><b>БАКУ</b></div><div class="travel-road"></div><div class="travel-dust">💨</div><div class="mushvig-runner"><div class="runner-head"></div><div class="runner-body"></div><div class="runner-arm one"></div><div class="runner-arm two"></div><div class="runner-leg one"></div><div class="runner-leg two"></div><div class="runner-suitcase"></div></div><div class="runner-plane">✈️</div></div><div class="travel-caption">Мушвиг с чемоданом прорывается из Москвы в Баку</div></div>
+    <strong>Операция «Олигархия» запущена</strong><span id="loaderText">Мушвиг схватил чемодан…</span><div class="loader-progress"><i id="loaderBar"></i></div><small id="loaderPercent">0%</small>
   </div>
   <div class="confetti" id="confetti"></div>
-
   <main class="app" id="app">
-    <section class="hero card">
-      <div class="topline"><div class="badge">БАКУ • 2026</div><div class="live-dot">● В ЭФИРЕ</div></div>
-      <div class="route"><span>МУШВИГ</span><i></i><b>✈️</b><i></i><span>БАКУ</span></div>
-      <h1>ОПЕРАЦИЯ<br><span>«ВЫЖИТЬ В БАКУ»</span></h1>
-      <p id="countdownLabel">До прилёта Мушвига 8 августа в 14:05 осталось</p>
-      <div class="countdown">
-        <div><strong id="days">00</strong><span>дней</span></div>
-        <div><strong id="hours">00</strong><span>часов</span></div>
-        <div><strong id="minutes">00</strong><span>минут</span></div>
-        <div><strong id="seconds">00</strong><span>секунд</span></div>
-      </div>
-      <div class="fun-line" id="funLine">🍺 Запас пива пополняется…</div>
-    </section>
-
-    <section class="card birthday-card" id="birthdayCard">
-      <p class="eyebrow">ОСОБАЯ ДАТА</p>
-      <div class="birthday-date">👑 20 АВГУСТА 2026</div>
-      <h2 id="birthdayTitle">ДЕНЬ ВЕЛИКОЙ ОЛИГАРХИИ МУШВИГА</h2>
-      <p class="birthday-subtitle" id="birthdaySubtitle">День, когда обычный отдых официально переходит в высшую лигу.</p>
-      <div class="birthday-countdown">
-        <div><strong id="birthdayDays">00</strong><span>дней</span></div>
-        <div><strong id="birthdayHours">00</strong><span>часов</span></div>
-        <div><strong id="birthdayMinutes">00</strong><span>минут</span></div>
-        <div><strong id="birthdaySeconds">00</strong><span>секунд</span></div>
-      </div>
-      <div class="birthday-phrase" id="birthdayPhrase">🥂 Козырно родился — олигархично отмечаем!</div>
-    </section>
-
-    <section class="card quote-card">
-      <p class="eyebrow">ЦИТАТНИК МУШВИГА</p>
-      <blockquote id="mushvigQuote">«Сначала прилетим, потом разберёмся.»</blockquote>
-      <button class="quote-button" id="quoteBtn">Следующая мудрость</button>
-      <p class="note">Собрано из приколов и формулировок нашей переписки.</p>
-    </section>
-
-    <section class="card slang-card">
-      <p class="eyebrow">СЛОВАРЬ МУШВИГА</p>
-      <h2>Перевод с мушвигского</h2>
-      <div class="slang-grid">
-        <div><b>👑 Олигархия</b><span>Высший уровень жизни и отдыха</span></div>
-        <div><b>👌 Козырно</b><span>Всё сделано грамотно и красиво</span></div>
-        <div><b>🍽️ Дать на кишку</b><span>Нормально поесть</span></div>
-        <div><b>🚽 Пятно давит</b><span>Срочно требуется техническая пауза</span></div>
-        <div><b>🐿️ Ширка-курка — схема-белка</b><span>Всё на мази, план работает</span></div>
-        <div><b>💰 Буржуи</b><span>Зажрались и живут слишком хорошо</span></div>
-      </div>
-      <div class="slang-live" id="slangLive">Ширка-курка — схема-белка. Всё на мази.</div>
-    </section>
-
-    <section class="card status-card">
-      <p class="eyebrow">ТЕКУЩАЯ ОБСТАНОВКА</p>
-      <div class="status" id="status">🟢 Мушвиг пока держится</div>
-      <div class="progress"><span id="progressBar"></span></div>
-      <small id="statusHint">Уровень опасности: минимальный</small>
-    </section>
-
-    <section class="card">
-      <div class="section-head"><div><p class="eyebrow">ОТПУСК В ЦИФРАХ</p><h2>Счётчики выживания</h2></div></div>
-      <div class="stats" id="stats"></div>
-    </section>
-
-    <section class="card">
-      <div class="section-head"><div><p class="eyebrow">КОМАНДА ОТПУСКА</p><h2>Рейтинг участников</h2></div><button class="ghost" id="addPlayerBtn">Добавить</button></div>
-      <div class="players" id="players"></div>
-    </section>
-
-    <section class="card">
-      <p class="eyebrow">ДОСТИЖЕНИЯ</p><h2>Зал славы</h2>
-      <div class="achievements" id="achievements"></div>
-    </section>
-
-    <section class="card">
-      <div class="section-head"><div><p class="eyebrow">ФОТОХРОНИКА</p><h2>Общая галерея</h2></div><label class="upload">Добавить фото<input id="photoInput" type="file" accept="image/*" multiple /></label></div>
-      <p class="note" id="galleryModeNote">Подключение к общей галерее…</p>
-      <div class="gallery" id="gallery"><div class="empty">📸 Загружаем легендарные кадры…</div></div>
-    </section>
-
-    <section class="card summary-card">
-      <p class="eyebrow">ИТОГОВЫЙ ПРОТОКОЛ</p>
-      <h2>Уровень легендарности</h2>
-      <div class="score"><span id="score">0</span><small>очков</small></div>
-      <div class="rank" id="rank">Новичок бакинского выживания</div>
-      <button class="primary" id="shareBtn">Отправить итоги друзьям</button>
-    </section>
+    <section class="hero card"><div class="topline"><div class="badge">БАКУ • 2026</div><div class="live-dot">● В ЭФИРЕ</div></div><div class="route"><span>МУШВИГ</span><i></i><b>✈️</b><i></i><span>БАКУ</span></div><h1>ОПЕРАЦИЯ<br><span>«ВЫЖИТЬ В БАКУ»</span></h1><p id="countdownLabel">До прилёта Мушвига 8 августа в 14:05 осталось</p><div class="countdown"><div><strong id="days">00</strong><span>дней</span></div><div><strong id="hours">00</strong><span>часов</span></div><div><strong id="minutes">00</strong><span>минут</span></div><div><strong id="seconds">00</strong><span>секунд</span></div></div><div class="fun-line" id="funLine">🍺 Запас пива пополняется…</div></section>
+    <section class="card birthday-card" id="birthdayCard"><p class="eyebrow">ОСОБАЯ ДАТА</p><div class="birthday-date">👑 20 АВГУСТА 2026</div><h2 id="birthdayTitle">ДЕНЬ ВЕЛИКОЙ ОЛИГАРХИИ МУШВИГА</h2><p class="birthday-subtitle" id="birthdaySubtitle">День, когда обычный отдых официально переходит в высшую лигу.</p><div class="birthday-countdown"><div><strong id="birthdayDays">00</strong><span>дней</span></div><div><strong id="birthdayHours">00</strong><span>часов</span></div><div><strong id="birthdayMinutes">00</strong><span>минут</span></div><div><strong id="birthdaySeconds">00</strong><span>секунд</span></div></div><div class="birthday-phrase" id="birthdayPhrase">🥂 Козырно родился — олигархично отмечаем!</div></section>
+    <section class="card quote-card"><p class="eyebrow">ЦИТАТНИК МУШВИГА</p><blockquote id="mushvigQuote">«Сначала прилетим, потом разберёмся.»</blockquote><button class="quote-button" id="quoteBtn">Следующая мудрость</button><p class="note">Собрано из приколов и формулировок нашей переписки.</p></section>
+    <section class="card slang-card"><p class="eyebrow">СЛОВАРЬ МУШВИГА</p><h2>Перевод с мушвигского</h2><div class="slang-grid"><div><b>👑 Олигархия</b><span>Высший уровень жизни и отдыха</span></div><div><b>👌 Козырно</b><span>Всё сделано грамотно и красиво</span></div><div><b>🍽️ Дать на кишку</b><span>Нормально поесть</span></div><div><b>🚽 Пятно давит</b><span>Срочно требуется техническая пауза</span></div><div><b>🐿️ Ширка-курка — схема-белка</b><span>Всё на мази, план работает</span></div><div><b>💰 Буржуи</b><span>Зажрались и живут слишком хорошо</span></div></div><div class="slang-live" id="slangLive">Ширка-курка — схема-белка. Всё на мази.</div></section>
+    <section class="card status-card"><p class="eyebrow">ТЕКУЩАЯ ОБСТАНОВКА</p><div class="status" id="status">🟢 Мушвиг пока держится</div><div class="progress"><span id="progressBar"></span></div><small id="statusHint">Уровень опасности: минимальный</small></section>
+    <section class="card"><div class="section-head"><div><p class="eyebrow">ОТПУСК В ЦИФРАХ</p><h2>Счётчики выживания</h2></div></div><div class="stats" id="stats"></div></section>
+    <section class="card"><div class="section-head"><div><p class="eyebrow">КОМАНДА ОТПУСКА</p><h2>Рейтинг участников</h2></div><button class="ghost" id="addPlayerBtn">Добавить</button></div><div class="players" id="players"></div></section>
+    <section class="card"><p class="eyebrow">ДОСТИЖЕНИЯ</p><h2>Зал славы</h2><div class="achievements" id="achievements"></div></section>
+    <section class="card"><div class="section-head"><div><p class="eyebrow">ФОТОХРОНИКА</p><h2>Общая галерея</h2></div><label class="upload">Добавить фото<input id="photoInput" type="file" accept="image/*" multiple /></label></div><p class="note" id="galleryModeNote">Подключение к общей галерее…</p><div class="gallery" id="gallery"><div class="empty">📸 Загружаем легендарные кадры…</div></div></section>
+    <section class="card summary-card"><p class="eyebrow">ИТОГОВЫЙ ПРОТОКОЛ</p><h2>Уровень легендарности</h2><div class="score"><span id="score">0</span><small>очков</small></div><div class="rank" id="rank">Новичок бакинского выживания</div><button class="primary" id="shareBtn">Отправить итоги друзьям</button></section>
   </main>
-
-  <div class="lightbox" id="lightbox" aria-hidden="true">
-    <button class="lightbox-download" id="lightboxDownload">⬇️ Сохранить</button>
-    <button class="lightbox-close" id="lightboxClose" aria-label="Закрыть">×</button>
-    <button class="lightbox-nav prev" id="lightboxPrev" aria-label="Предыдущее фото">‹</button>
-    <img id="lightboxImage" alt="Фото отпуска крупным планом" />
-    <button class="lightbox-nav next" id="lightboxNext" aria-label="Следующее фото">›</button>
-    <div class="lightbox-counter" id="lightboxCounter"></div>
-  </div>
-
+  <div class="lightbox" id="lightbox" aria-hidden="true"><button class="lightbox-download" id="lightboxDownload">⬇️ Сохранить</button><button class="lightbox-close" id="lightboxClose" aria-label="Закрыть">×</button><button class="lightbox-nav prev" id="lightboxPrev" aria-label="Предыдущее фото">‹</button><img id="lightboxImage" alt="Фото отпуска крупным планом" /><button class="lightbox-nav next" id="lightboxNext" aria-label="Следующее фото">›</button><div class="lightbox-counter" id="lightboxCounter"></div></div>
   <template id="statTemplate"><article class="stat-item"><div class="stat-icon"></div><div class="stat-copy"><h3></h3><p></p></div><div class="stat-controls"><button class="minus">−</button><strong>0</strong><button class="plus">+</button></div></article></template>
-  <script src="app.js?v=20260729-14"></script>
-  <script src="slang.js?v=20260729-14"></script>
-  <script src="birthday.js?v=20260729-14"></script>
-  <script src="gallery-v2.js?v=20260729-14"></script>
-  <script src="gallery-scroll-fix.js?v=20260729-14"></script>
-  <script src="access-mode.js?v=20260729-14"></script>
-  <script src="admin-panel.js?v=20260729-14"></script>
+  <script src="app.js?v=20260807-1"></script><script src="slang.js?v=20260807-1"></script><script src="birthday.js?v=20260807-1"></script><script src="gallery-v2.js?v=20260807-1"></script><script src="gallery-scroll-fix.js?v=20260807-1"></script><script src="access-mode.js?v=20260807-1"></script><script src="esim.js?v=20260807-1"></script><script src="admin-panel.js?v=20260807-1"></script>
 </body>
 </html>
